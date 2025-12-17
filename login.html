@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UrbanPro - Online Learning Platform</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; 
+         background: #f5f5f5;
+         overflow-x: hidden; }
+
+    .navbar {
+         background: white; 
+         box-shadow: 0 2px 4px rgba(0,0,0,0.08); 
+         position: sticky; 
+         top: 0;
+          z-index: 1000; 
+          border-bottom: 1px solid #e0e0e0; }
+    .nav-container {
+         max-width: 1400px;
+          margin: 0 auto;
+           display: flex; 
+           align-items: center;
+            justify-content: space-between; 
+            padding: 0 20px; 
+            height: 65px; }
+    .logo {
+         display: flex; 
+         align-items: center;
+          gap: 10px;
+           text-decoration: none; 
+           width:200px; 
+           height: 60px; }
+    .logo-tagline { 
+        font-size: 11px; 
+        color: #888; 
+        letter-spacing: 0.5px; 
+        margin-top: 2px;
+        padding: 0;
+        position: relative;
+        right: 100px;
+     }
+    .nav-menu { 
+         display: flex;
+         position: relative;
+         right: 140px;
+         list-style: none; 
+         gap: 0;
+         align-items: center;
+         margin: 0; }
+    .nav-item { 
+        position: relative; }
+    .nav-link {
+         display: flex; 
+         align-items: center; 
+         gap: 5px;
+          padding: 22px 20px; 
+          color: #555; 
+          text-decoration: none;
+           font-size: 15px;
+            font-weight: 500; 
+            transition: all 0.2s; 
+            border-bottom: 3px solid transparent; }
+    .nav-link:hover, .nav-link.active { 
+        color: #00bcd4; 
+        border-bottom-color: #00bcd4; }
+    .nav-link::after { 
+        content: '▼'; 
+        font-size: 9px; 
+        margin-left: 3px; 
+        opacity: 0.7;}
+    .mega-menu {
+         position: absolute; 
+         top: 100%;
+          background: white;
+           box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+           opacity: 0; 
+           visibility: hidden; 
+           transition: all 0.3s; 
+           z-index: 999; 
+           min-width: 720px; 
+           max-width: 850px; 
+           border-top: 3px solid #00bcd4; }
+    .nav-item:hover .mega-menu { 
+        opacity: 1; 
+        visibility: visible;}
+    .nav-item:nth-child(1) .mega-menu, .nav-item:nth-child(2) .mega-menu, .nav-item:nth-child(3) .mega-menu { 
+        left: 0; 
+        right: auto; }
+    .nav-item:nth-last-child(-n+3) .mega-menu { 
+        right: 0;
+        left: auto; }
+    .mega-content { 
+        padding: 40px 50px; 
+        display: grid; 
+        grid-template-columns: repeat(4,1fr); 
+        gap: 40px;}
+    .mega-column h3 { 
+        font-size: 15px;
+         color: #333; 
+         margin-bottom: 25px; 
+         font-weight: 600;}
+    .mega-column ul {
+         list-style: none;}
+    .mega-column li {
+         margin-bottom: 15px;}
+    .mega-column a { 
+        color: #666; 
+        text-decoration: none; 
+        font-size: 14px; 
+        transition: color 0.2s; 
+        display: inline-block;}
+    .mega-column a:hover {
+         color: #00bcd4;}
+   
+    .hero-section {
+         background: linear-gradient(135deg,#16c79a 0%,#11998e 100%); 
+         padding: 80px 20px; 
+         color: white; 
+         min-height: 100vh; 
+         display: flex; 
+         align-items: center; 
+         justify-content: center; }
+    
+    .hero-container { 
+        max-width: 800px; 
+        margin: 0 auto; 
+        width: 100%; 
+        display: flex; 
+        justify-content: center;}
+    
+    .hero-content { 
+        display: flex; 
+        flex-direction: column; 
+        align-items: center; 
+        text-align: center; 
+        width: 100%;}
+    
+    #displayArea {
+         font-size: 2.1rem; 
+         background: none; 
+         color: #fff;
+         margin-bottom:30px;
+         font-weight: 500;}
+    
+    .form-container { 
+        background: white;
+        padding: 40px 50px; 
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
+        width: 100%;
+        max-width: 700px;
+        min-height: 500px;
+        position: relative;}
+    
+    .back-button {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #16c79a;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;}
+    
+    .back-button:hover {
+        background: #11998e;
+        transform: scale(1.1);}
+    
+    .step {
+        display: none;
+        animation: fadeIn 0.5s;}
+    
+    .step.active {
+        display: block;}
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }}
+    
+    .form-title {
+        font-size: 22px;
+        color: #333;
+        margin-bottom: 30px;
+        font-weight: 600;
+        text-align: center;}
+    
+    .matches-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 35px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #e0e0e0;}
+    
+    .matches-label {
+        color: #666;
+        font-size: 15px;
+        font-weight: 500;}
+    
+    .avatar-list {
+        display: flex;
+        gap: 8px;}
+    
+    .avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;}
+    
+    .more-count {
+        background: #333;}
+    
+    .form-label { 
+        font-size: 16px; 
+        color: #333; 
+        margin-bottom: 12px; 
+        display: block;
+        font-weight: 500;}
+    
+    .country-select, .location-input { 
+        width: 100%; 
+        padding: 14px 16px;
+        border: 1px solid #ddd; 
+        border-radius: 6px; 
+        font-size: 15px;
+        margin-bottom: 20px;
+        outline: none; 
+        background: white; 
+        color: #333;
+        cursor: pointer;}
+    
+    .country-select:focus, .location-input:focus {
+        border-color: #16c79a;}
+    
+    .location-input::placeholder {
+        color: #999;}
+    
+    .checkbox-list {
+        margin-bottom: 25px;
+        max-height: 350px;
+        overflow-y: auto;}
+    
+    .checkbox-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: all 0.3s;}
+    
+    .checkbox-item:hover {
+        border-color: #16c79a;
+        background: #f0fff9;}
+    
+    .checkbox-item input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+        cursor: pointer;
+        accent-color: #16c79a;
+        flex-shrink: 0;}
+    
+    .checkbox-content {
+        flex: 1;}
+    
+    .checkbox-title {
+        font-size: 15px;
+        color: #333;
+        font-weight: 500;
+        margin-bottom: 8px;}
+    
+    .checkbox-subtitle {
+        font-size: 13px;
+        color: #666;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;}
+    
+    .checkbox-subtitle span {
+        display: flex;
+        align-items: center;
+        gap: 5px;}
+    
+    .checkbox-subtitle span::before {
+        content: '✓';
+        color: #16c79a;}
+    
+    .no-tutors {
+        color: #ff4444;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 5px;}
+    
+    .no-tutors::before {
+        content: '⚠';
+        color: #ff4444;}
+    
+    .radio-list {
+        margin-bottom: 25px;}
+    
+    .radio-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        transition: all 0.3s;}
+    
+    .radio-item:hover {
+        border-color: #16c79a;}
+    
+    .radio-item input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        margin-right: 15px;
+        cursor: pointer;
+        accent-color: #16c79a;}
+    
+    .radio-label {
+        font-size: 15px;
+        color: #333;}
+    
+    .form-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 15px;
+        margin-bottom: 18px;
+        outline: none;
+        transition: border 0.3s;}
+    
+    .form-input:focus {
+        border-color: #16c79a;}
+    
+    .form-input::placeholder {
+        color: #999;}
+    
+    .phone-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 18px;}
+    
+    .phone-select {
+        width: 140px;}
+    
+    .phone-input {
+        flex: 1;}
+    
+    .toggle-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;}
+    
+    .toggle-label {
+        font-size: 14px;
+        color: #666;
+        flex: 1;
+        margin-right: 15px;}
+    
+    .toggle-switch {
+        position: relative;
+        width: 50px;
+        height: 26px;
+        background: #ccc;
+        border-radius: 26px;
+        cursor: pointer;
+        transition: background 0.3s;
+        flex-shrink: 0;}
+    
+    .toggle-switch input {
+        display: none;}
+    
+    .toggle-switch.active {
+        background: #16c79a;}
+    
+    .toggle-slider {
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        transition: transform 0.3s;}
+    
+    .toggle-switch.active .toggle-slider {
+        transform: translateX(24px);}
+    
+    .next-btn {
+         width: 100%; 
+         padding: 15px; 
+         background: #e0e0e0; 
+         color: #999; 
+         border: none; 
+         border-radius: 6px; 
+         font-size: 16px; 
+         font-weight: 600; 
+         cursor: not-allowed; 
+         transition: all 0.3s;
+         margin-top: 10px;}
+    
+    .next-btn.active { 
+        background: #1976D2; 
+        color: white; 
+        cursor: pointer;}
+    
+    .next-btn.active:hover {
+        background: #1565C0;}
+    
+    .continue-btn {
+        width: 100%;
+        padding: 15px;
+        background: #1976D2;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-top: 10px;}
+    
+    .continue-btn:hover {
+        background: #1565C0;}
+    .continue-btn:hover a{
+        text-decoration: none;
+        color: white;
+    }
+    
+    .tutor-link { 
+        text-align: center; 
+        margin-top: 24px; 
+        color: #666; 
+        font-size: 14px;
+        line-height: 1.6;}
+    
+    .tutor-link a {
+         color: #1976D2; 
+         text-decoration: underline; 
+         font-weight: 500;}
+    
+    .tutor-link a:hover { 
+        color: #1565C0;}
+    
+    .terms-text {
+        text-align: center;
+        font-size: 13px;
+        color: #666;
+        margin-top: 20px;}
+    
+    .terms-text a {
+        color: #1976D2;
+        text-decoration: none;}
+    
+    @media (max-width:1050px) { 
+        .mega-content{
+            grid-template-columns:repeat(2,1fr); 
+            padding:30px;}
+        .mega-menu{
+            min-width:400px;}}
+    
+    @media (max-width:768px) {
+        .nav-menu { display: none;}
+        .hero-section {padding: 35px 12px;}
+        .form-container { padding: 30px 20px; min-height: auto;}
+        #displayArea { font-size:1.5rem;}}
+</style>
+</head>
+<body>
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="#" class="logo">
+            <img src="img/logo.png" style="width: 200px; height: 60px;" alt="UrbanPro">
+        </a>
+        <span class="logo-tagline">Discover • Learn • Grow</span>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link">Online Classes</a>
+                <div class="mega-menu">
+                    <div class="mega-content">
+                        <div class="mega-column">
+                            <h3>Tuitions</h3>
+                            <ul>
+                                <li><a href="#" onclick="showText('Class 12 Tuition'); return false;">Class 12 Tuition</a></li>
+                                <li><a href="#" onclick="showText('PHP'); return false;">PHP</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-column">
+                            <h3>Languages</h3>
+                            <ul>
+                                <li><a href="#" onclick="showText('Spoken English'); return false;">Spoken English</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-column">
+                            <h3>Hobbies</h3>
+                            <ul>
+                                <li><a href="#" onclick="showText('Yoga'); return false;">Yoga</a></li>
+                            </ul>
+                        </div>
+                        <div class="mega-column">
+                            <h3>More</h3>
+                            <ul>
+                                <li><a href="#" onclick="showText('All Classes'); return false;">All Classes</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<section class="hero-section"> 
+    <div class="hero-container">
+        <div class="hero-content">
+            <div id="displayArea">Welcome</div>
+            <div class="form-container">
+                <button class="back-button" id="backBtn" onclick="previousStep()">←</button>
+                
+                <!-- Step 1 -->
+                <div class="step active" id="step1">
+                    <div class="matches-section">
+                        <span class="matches-label">Matches Found</span>
+                        <div class="avatar-list">
+                            <div class="avatar">JD</div>
+                            <div class="avatar">SK</div>
+                            <div class="avatar">AM</div>
+                            <div class="avatar">RK</div>
+                            <div class="avatar">PG</div>
+                            <div class="avatar more-count">+1394</div>
+                        </div>
+                    </div>
+                    
+                    <h2 class="form-title">What is your location?</h2>
+                    <label class="form-label">Country</label>
+                    <select class="country-select">
+                        <option>🇮🇳 India</option>
+                        <option>🇺🇸 USA</option>
+                    </select>
+                    <label class="form-label">Location</label>
+                    <input type="text" class="location-input" placeholder="246763 (Najibabad, Najibabad)" id="locationInput" oninput="checkStep1()">
+                    <button class="next-btn" id="step1Btn" onclick="nextStep(1)">Next</button>
+                    <div class="tutor-link">Are you a Tutor?<br><a href="#">Create Free Profile</a></div>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="step" id="step2">
+                    <h2 class="form-title">What type of PHP training do you want to take?</h2>
+                    <div class="checkbox-list">
+                        <label class="checkbox-item">
+                            <input type="checkbox" onchange="checkStep2()">
+                            <div class="checkbox-content"><div class="checkbox-title">PHP CMS</div></div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked onchange="checkStep2()">
+                            <div class="checkbox-content"><div class="checkbox-title">Php MySQL</div></div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" onchange="checkStep2()">
+                            <div class="checkbox-content"><div class="checkbox-title">PHP Realtime Project</div></div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" onchange="checkStep2()">
+                            <div class="checkbox-content"><div class="checkbox-title">PHP Web 2.0</div></div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" onchange="checkStep2()">
+                            <div class="checkbox-content"><div class="checkbox-title">Php AJAX</div></div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" onchange="checkStep2()">
+                            <div class="checkbox-content"><div class="checkbox-title">Advanced PHP</div></div>
+                        </label>
+                    </div>
+                    <button class="next-btn active" onclick="nextStep(2)">Next</button>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="step" id="step3">
+                    <h2 class="form-title">When do you plan to start PHP Classes?</h2>
+                    <div class="radio-list">
+                        <label class="radio-item">
+                            <input type="radio" name="timeline" value="immediately" checked>
+                            <span class="radio-label">Immediately</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="timeline" value="month">
+                            <span class="radio-label">Within a month</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="timeline" value="explore">
+                            <span class="radio-label">Not sure, just want to look at options</span>
+                        </label>
+                    </div>
+                    <button class="next-btn active" onclick="nextStep(3)">Next</button>
+                </div>
+                
+                <!-- Step 4 -->
+                <div class="step" id="step4">
+                    <h2 class="form-title">How would you like to attend your PHP Classes?</h2>
+                    <div class="checkbox-list">
+                        <label class="checkbox-item">
+                            <input type="checkbox" onchange="checkStep4()">
+                            <div class="checkbox-content">
+                                <div class="checkbox-title">💻 Live Interactive Online Classes</div>
+                                <div class="checkbox-subtitle" style="color: #16c79a; font-weight: 500; margin-top: 5px;">Recommended</div>
+                                <div class="checkbox-subtitle">
+                                    <span>Highly Rated Tutors</span>
+                                    <span>Free Demo Class</span>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" onchange="checkStep4()">
+                            <div class="checkbox-content">
+                                <div class="checkbox-title">📍 Offline at my Home or nearby Classes</div>
+                                <div class="no-tutors">No Tutors Found</div>
+                            </div>
+                        </label>
+                    </div>
+                    <button class="next-btn" id="step4Btn" onclick="nextStep(4)">Next</button>
+                </div>
+                
+                <!-- Step 5 -->
+                <div class="step" id="step5">
+                    <h2 class="form-title">Sign-up to Book a Free Demo Class</h2>
+                    <input type="text" class="form-input" placeholder="Full Name" id="fullName" oninput="checkStep5()">
+                    <input type="email" class="form-input" placeholder="Email" id="email" oninput="checkStep5()">
+                    <div class="phone-group">
+                        <select class="form-input phone-select">
+                            <option>India(+91)</option>
+                            <option>USA(+1)</option>
+                        </select>
+                        <input type="tel" class="form-input phone-input" placeholder="Mobile number" id="phone" oninput="checkStep5()">
+                    </div>
+                    <div class="toggle-container">
+                        <label class="toggle-label">Let few interested PHP Teachers call me or send me a WhatsApp message</label>
+                        <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                            <div class="toggle-slider"></div>
+                            <input type="checkbox" checked>
+                        </div>
+                    </div>
+                    <button class="continue-btn" onclick="submitForm()"><a href="stu-dash.html">Continue</a></button>
+                    <div class="terms-text">By Signing up, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+let currentStep = 1;
+
+function nextStep(step) {
+    document.getElementById('step' + step).classList.remove('active');
+    currentStep = step + 1;
+    document.getElementById('step' + currentStep).classList.add('active');
+    document.getElementById('backBtn').style.display = 'flex';
+    if (currentStep === 2) {
+        document.getElementById('displayArea').textContent = 'Find Best Online Tuition for PHP in India';
+    }
+}
+
+function previousStep() {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep--;
+    document.getElementById('step' + currentStep).classList.add('active');
+    if (currentStep === 1) {
+        document.getElementById('backBtn').style.display = 'none';
+        document.getElementById('displayArea').textContent = 'Welcome';
+    }
+}
+
+function checkStep1() {
+    const btn = document.getElementById('step1Btn');
+    btn.classList.toggle('active', document.getElementById('locationInput').value.trim() !== '');
+}
+
+function checkStep2() {}
+function checkStep3() {}
+
+function checkStep4() {
+    const btn = document.getElementById('step4Btn');
+    const checkboxes = document.querySelectorAll('#step4 input[type="checkbox"]');
+    btn.classList.toggle('active', Array.from(checkboxes).some(cb => cb.checked));
+}
+
+function checkStep5() {}
+
+function toggleSwitch(element) {
+    element.classList.toggle('active');
+    element.querySelector('input').checked = !element.querySelector('input').checked;
+}
+
+function submitForm() {
+    alert('Form submitted! You will receive a confirmation shortly.');
+}
+
+function showText(type) {
+    document.getElementById('displayArea').textContent = 'Find Best Online Tuition for ' + type + ' in India';
+}
+</script>
+</body>
+</html>
