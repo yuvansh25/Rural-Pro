@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Reviews - Rural-Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            height: 50px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #001a33;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #667eea;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #ffd700;
+        }
+
+        .stat-label {
+            color: white;
+            margin-top: 0.5rem;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .review-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 3px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .reviewer-info h3 {
+            color: #001a33;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .reviewer-info p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .stars {
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-text {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .review-date {
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .filter-section {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-content">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 400'%3E%3Cstyle%3E .logo-text %7B font-family: Arial, sans-serif; font-size: 180px; font-weight: bold; fill: %23001a33; %7D .book-icon %7B fill: %23001a33; %7D %3C/style%3E%3Cpath class='book-icon' d='M50 100 Q50 80 70 80 L150 80 Q170 80 170 100 L170 300 Q170 320 150 320 L70 320 Q50 320 50 300 Z M70 100 L70 300 L90 300 L90 100 Z M100 100 L100 300 L150 300 L150 100 Z'/%3E%3Ctext class='logo-text' x='200' y='260'%3ERural-Pro%3C/text%3E%3C/svg%3E" alt="Rural-Pro Logo" class="logo">
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="signup.html">Signup</a></li>
+                <li><a href="review.html">Reviews</a></li>
+                <li><a href="login.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header">
+            <h1>Customer Reviews</h1>
+            <p>See what our customers have to say about us</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">4.8</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">247</div>
+                    <div class="stat-label">Total Reviews</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Satisfaction Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <button class="filter-btn active" onclick="filterReviews('all')">All Reviews</button>
+            <button class="filter-btn" onclick="filterReviews('5')">5 Stars</button>
+            <button class="filter-btn" onclick="filterReviews('4')">4 Stars</button>
+            <button class="filter-btn" onclick="filterReviews('3')">3 Stars</button>
+        </div>
+
+        <div class="reviews-grid" id="reviewsGrid"></div>
+    </div>
+
+    <script>
+        // INSTRUCTIONS FOR ADDING YOUR AI IMAGES:
+        // Simply replace the image URL in the 'avatar' field with your AI-generated image URL
+        // Example: avatar: "https://your-image-url.com/person1.jpg"
+        
+        const reviews = [
+            {
+                name: "Sarah Johnson",
+                location: "Texas",
+                rating: 5,
+                avatar: "https://i.pravatar.cc/150?img=1", // Replace with your AI image URL
+                text: "Excellent service! The team at Rural-Pro went above and beyond to help with our farming needs. Highly recommend their expertise and professionalisExcellent service! The team at Rural-Pro went above and beyond to help with our farming needs. Highly recommend their expertise and professionalism.",
+                date: "2 days ago"
+            },
+            {
+                name: "Michael Chen",
+                location: "California",
+                rating: 5,
+                avatar: "https://i.pravatar.cc/150?img=12", // Replace with your AI image URL
+                text: "Outstanding quality and customer service. They truly understand the needs of rural communities and deliver exceptional solutions.",
+                date: "1 week ago"
+            },
+            {
+                name: "Emily Rodriguez",
+                location: "Arizona",
+                rating: 4,
+                avatar: "https://i.pravatar.cc/150?img=5", // Replace with your AI image URL
+                text: "Great experience overall. The staff was knowledgeable and helpful. Delivery was prompt and the products exceeded my expectations.",
+                date: "2 weeks ago"
+            },
+            {
+                name: "David Thompson",
+                location: "Montana",
+                rating: 5,
+                avatar: "https://i.pravatar.cc/150?img=13", // Replace with your AI image URL
+                text: "Best decision we made for our ranch. The quality of service is unmatched and their team is always ready to help with any questions.",
+                date: "3 weeks ago"
+            },
+            {
+                name: "Lisa Martinez",
+                location: "Colorado",
+                rating: 5,
+                avatar: "https://i.pravatar.cc/150?img=9", // Replace with your AI image URL
+                text: "Incredible support and fantastic products. Rural-Pro has become an essential partner for our agricultural operations.",
+                date: "1 month ago"
+            },
+            {
+                name: "Robert Anderson",
+                location: "Wyoming",
+                rating: 4,
+                avatar: "https://i.pravatar.cc/150?img=14", // Replace with your AI image URL
+                text: "Very satisfied with the service. Professional team and quality products. Would definitely recommend to other rural businesses.",
+                date: "1 month ago"
+            },
+            {
+                name: "Jennifer White",
+                location: "Idaho",
+                rating: 5,
+                avatar: "https://i.pravatar.cc/150?img=10", // Replace with your AI image URL
+                text: "Exceptional service from start to finish. The team's expertise in rural solutions is evident in everything they do.",
+                date: "2 months ago"
+            },
+            {
+                name: "James Wilson",
+                location: "Nebraska",
+                rating: 5,
+                avatar: "https://i.pravatar.cc/150?img=15", // Replace with your AI image URL
+                text: "Top-notch service and products. Rural-Pro understands the unique challenges of rural operations and provides excellent solutions.",
+                date: "2 months ago"
+            },
+            {
+                name: "Patricia Brown",
+                location: "Kansas",
+                rating: 4,
+                avatar: "https://i.pravatar.cc/150?img=20", // Replace with your AI image URL
+                text: "Good quality service and responsive customer support. They delivered exactly what we needed for our farm operations.",
+                date: "3 months ago"
+            }
+        ];
+
+        function renderStars(rating) {
+            return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+        }
+
+        function renderReviews(filteredReviews) {
+            const grid = document.getElementById('reviewsGrid');
+            grid.innerHTML = filteredReviews.map(review => `
+                <div class="review-card" data-rating="${review.rating}">
+                    <div class="review-header">
+                        <img src="${review.avatar}" alt="${review.name}" class="avatar">
+                        <div class="reviewer-info">
+                            <h3>${review.name}</h3>
+                            <p>${review.location}</p>
+                        </div>
+                    </div>
+                    <div class="stars">${renderStars(review.rating)}</div>
+                    <p class="review-text">${review.text}</p>
+                    <p class="review-date">${review.date}</p>
+                </div>
+            `).join('');
+        }
+
+        function filterReviews(rating) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            const filtered = rating === 'all' 
+                ? reviews 
+                : reviews.filter(r => r.rating === parseInt(rating));
+            
+            renderReviews(filtered);
+        }
+
+        renderReviews(reviews);
+    </script>
+</body>
+</html>
