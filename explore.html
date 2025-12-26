@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UrbanPro - Find Tutors</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+        .img{
+            mix-blend-mode: multiply;
+            height: 100px;
+            padding: 0;
+            margin-bottom: -40px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .matches-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .matches-label {
+            color: #666;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .avatars {
+            display: flex;
+            gap: 8px;
+        }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .more-count {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #333;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-title {
+            text-align: center;
+            color: #333;
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .select-wrapper {
+            position: relative;
+        }
+
+        .country-select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #333;
+            background: white;
+            cursor: pointer;
+            appearance: none;
+            outline: none;
+            transition: border-color 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .country-display {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #333;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: border-color 0.3s;
+        }
+
+        .country-display:hover,
+        .form-input:hover {
+            border-color: #1abc9c;
+        }
+
+        .country-display:focus,
+        .form-input:focus {
+            border-color: #1abc9c;
+            outline: none;
+        }
+
+        .flag {
+            width: 24px;
+            height: 16px;
+        }
+
+        .dropdown-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 14px;
+            background: #d0d0d0;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .next-btn.active {
+            background: #1abc9c;
+        }
+
+        .next-btn.active:hover {
+            background: #16a085;
+        }
+
+        .tutor-section {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .tutor-question {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+
+        .create-profile-link {
+            color: #333;
+            text-decoration: underline;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .create-profile-link:hover {
+            color: #1abc9c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .logo-text {
+                font-size: 28px;
+            }
+
+            .avatars {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img class="img" src="img/logo.png">
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="matches-section">
+            <span class="matches-label">Matches Found</span>
+            <div class="avatars">
+                <img src="https://i.pravatar.cc/100?img=1" alt="Tutor" class="avatar">
+                <img src="https://i.pravatar.cc/100?img=12" alt="Tutor" class="avatar">
+                <img src="https://i.pravatar.cc/100?img=5" alt="Tutor" class="avatar">
+                <img src="https://i.pravatar.cc/100?img=33" alt="Tutor" class="avatar">
+                <img src="https://i.pravatar.cc/100?img=14" alt="Tutor" class="avatar">
+                <img src="https://i.pravatar.cc/100?img=9" alt="Tutor" class="avatar">
+                <div class="more-count">+207</div>
+            </div>
+        </div>
+
+        <h2 class="form-title">What is your location?</h2>
+
+        <form id="locationForm">
+            <div class="form-group">
+                <label class="form-label">Country</label>
+                <div class="select-wrapper">
+                    <div class="country-display" onclick="toggleDropdown()">
+                        <svg class="flag" viewBox="0 0 24 16" fill="none">
+                            <rect width="24" height="5.33" fill="#FF9933"/>
+                            <rect y="5.33" width="24" height="5.33" fill="#FFFFFF"/>
+                            <rect y="10.67" width="24" height="5.33" fill="#138808"/>
+                            <circle cx="12" cy="8" r="1.5" fill="#000080"/>
+                        </svg>
+                        <span>India</span>
+                    </div>
+                    <span class="dropdown-icon">▼</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Location</label>
+                <input 
+                    type="text" 
+                    class="form-input" 
+                    id="locationInput"
+                    placeholder="Enter Your Location or Pin code"
+                    oninput="checkForm()"
+                >
+            </div>
+
+            <button type="submit" class="next-btn" id="nextBtn">Next</button>
+        </form>
+
+        <div class="tutor-section">
+            <p class="tutor-question">Are you a Tutor?</p>
+            <a href="#" class="create-profile-link">Create Free Profile</a>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown() {
+            alert('Country dropdown would open here');
+        }
+
+        function checkForm() {
+            const locationInput = document.getElementById('locationInput');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (locationInput.value.trim() !== '') {
+                nextBtn.classList.add('active');
+            } else {
+                nextBtn.classList.remove('active');
+            }
+        }
+
+        document.getElementById('locationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const location = document.getElementById('locationInput').value;
+            if (location.trim() !== '') {
+                alert('Location submitted: ' + location);
+            }
+        });
+    </script>
+</body>
+</html>
