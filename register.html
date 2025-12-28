@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Registration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        } 
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 650px;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            margin-bottom: 20px;
+        }
+
+        .class-info {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .class-thumbnail {
+            width: 90px;
+            height: 90px;
+            border-radius: 8px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .live-badge {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: #ff4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .class-details {
+            flex: 1;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .stars {
+            color: #ffa500;
+            font-size: 18px;
+        }
+
+        .review-count {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .schedule {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .countdown {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .countdown-label {
+            color: #10b981;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .time-unit {
+            text-align: center;
+        }
+
+        .time-value {
+            font-size: 20px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .time-label {
+            font-size: 11px;
+            color: #999;
+            margin-top: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #2196F3;
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .required {
+            color: #ff4444;
+        }
+
+        .phone-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .country-select {
+            width: 140px;
+            padding: 14px 16px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+            cursor: pointer;
+            background: white;
+        }
+
+        .phone-input {
+            flex: 1;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 14px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .continue-btn:hover {
+            background: #1976D2;
+        }
+
+        .terms {
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            margin-top: 20px;
+        }
+
+        .terms a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .modal {
+                padding: 30px 20px;
+            }
+
+            .modal-title {
+                font-size: 20px;
+            }
+
+            .class-info {
+                flex-direction: column;
+            }
+
+            .countdown {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="modal">
+        <button class="close-btn">✕</button>
+        
+        <div class="modal-header">
+            <h1 class="modal-title">Class 10 Tuition - Science, Mathematics by Vivek G</h1>
+            
+            <div class="class-info">
+                <div style="position: relative;">
+                    <img src="img/t1.jpg" alt="Teacher" class="class-thumbnail">
+                    <span class="live-badge">LIVE</span>
+                </div>
+                
+                <div class="class-details">
+                    <div class="rating">
+                        <span class="stars">★★★★★</span>
+                        <span class="review-count">(10 reviews)</span>
+                    </div>
+                    
+                    <div class="schedule">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 14C11.3137 14 14 11.3137 14 8C14 4.68629 11.3137 2 8 2C4.68629 2 2 4.68629 2 8C2 11.3137 4.68629 14 8 14Z" stroke="#666" stroke-width="1.5"/>
+                            <path d="M8 4V8L10.5 9.5" stroke="#666" stroke-width="1.5" stroke-linecap="round"/>
+                        </svg>
+                        <span>Fri, 26 Oct at 12:30pm</span>
+                    </div>
+                    
+                    <div class="countdown">
+                        <span class="countdown-label">Class starts in</span>
+                        <div class="time-unit">
+                            <div class="time-value" id="days">00</div>
+                            <div class="time-label">Days</div>
+                        </div>
+                        <div class="time-unit">
+                            <div class="time-value" id="hours">00</div>
+                            <div class="time-label">Hour</div>
+                        </div>
+                        <div class="time-unit">
+                            <div class="time-value" id="minutes">45</div>
+                            <div class="time-label">Min</div>
+                        </div>
+                        <div class="time-unit">
+                            <div class="time-value" id="seconds">27</div>
+                            <div class="time-label">Sec</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <form id="registrationForm">
+            <div class="form-group">
+                <input type="text" class="form-input" placeholder="Full Name*" required>
+            </div>
+
+            <div class="form-group">
+                <input type="email" class="form-input" placeholder="Email*" required>
+            </div>
+
+            <div class="form-group">
+                <div class="phone-group">
+                    <select class="country-select">
+                        <option value="+91">India(+91)</option>
+                        <option value="+1">USA(+1)</option>
+                        <option value="+44">UK(+44)</option>
+                        <option value="+61">Australia(+61)</option>
+                    </select>
+                    <input type="tel" class="form-input phone-input" placeholder="Mobile number*" required>
+                </div>
+            </div>
+
+            <button type="submit" class="continue-btn">Continue</button>
+
+            <div class="terms">
+                By Signing up, you agree to our <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const seconds = document.getElementById('seconds');
+            const minutes = document.getElementById('minutes');
+            
+            let sec = parseInt(seconds.textContent);
+            let min = parseInt(minutes.textContent);
+            
+            if (sec > 0) {
+                sec--;
+            } else {
+                sec = 59;
+                if (min > 0) {
+                    min--;
+                }
+            }
+            
+            seconds.textContent = sec.toString().padStart(2, '0');
+            minutes.textContent = min.toString().padStart(2, '0');
+        }
+
+        setInterval(updateCountdown, 1000);
+
+        // Close button
+        document.querySelector('.close-btn').addEventListener('click', function() {
+            alert('Modal would close here');
+        });
+
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Registration submitted!');
+        });
+    </script>
+</body>
+</html>

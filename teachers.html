@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Courses and Classes on UrbanPro</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+    }
+
+    /* Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: #fff;
+      border-bottom: 1px solid #ebeef0;
+      box-shadow: 0 2px 4px rgba(12, 23, 34, 0.04);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 36px;
+      z-index: 1000;
+      height: 60px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      height: 36px;
+      width: auto;
+    }
+
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #333;
+      background: none;
+      border: none;
+      padding: 5px 10px;
+      transition: transform 0.3s ease;
+    }
+
+    .hamburger:hover {
+      transform: scale(1.1);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      top: 0;
+      right: 0;
+      background-color: #2c3e50;
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: width 0.3s ease;
+      z-index: 2000;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar a {
+      padding: 15px 25px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      color: white;
+      display: block;
+      transition: all 0.3s;
+      opacity: 0;
+      transform: translateX(20px);
+    }
+
+    .sidebar[style*="width: 250px"] a {
+      opacity: 1;
+      transform: translateX(0);
+      transition: opacity 0.3s ease 0.2s, transform 0.3s ease 0.2s, background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #34495e;
+      padding-left: 30px;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-top: 60px;
+      padding: 40px 20px;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .page-header {
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .page-subtitle {
+      font-size: 1.1rem;
+      color: #7f8c8d;
+    }
+
+    .search-container {
+      margin: 30px 0;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      max-width: 600px;
+      padding: 15px 20px 15px 50px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border 0.3s;
+    }
+
+    .search-input:focus {
+      border-color: #0074cc;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+      font-size: 1.2rem;
+    }
+
+    /* Content Layout */
+    .content-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 30px;
+      align-items: start;
+    }
+
+    .courses-section {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .sidebar-section {
+      position: sticky;
+      top: 80px;
+    }
+
+    .sidebar-card {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .sidebar-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 15px;
+      color: #2c3e50;
+    }
+
+    .sidebar-card p {
+      color: #7f8c8d;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      background: #0074cc;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn-primary:hover {
+      background: #005fa3;
+    }
+
+    .btn-outline {
+      background: white;
+      color: #0074cc;
+      border: 2px solid #0074cc;
+      padding: 10px 28px;
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-outline:hover {
+      background: #0074cc;
+      color: white;
+    }
+
+    /* Course Card */
+    .course-card {
+      display: flex;
+      gap: 20px;
+      padding: 25px;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      margin-bottom: 25px;
+      transition: box-shadow 0.3s;
+    }
+
+    .course-card:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .course-image {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .course-img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: #e74c3c;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .course-details {
+      flex: 1;
+    }
+
+    .course-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .course-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .course-date {
+      color: #7f8c8d;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    .calendar-icon {
+      margin-right: 5px;
+    }
+
+    .course-description {
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+    }
+
+    .course-meta {
+      display: flex;
+      gap: 30px;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
+      color: #7f8c8d;
+    }
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .meta-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .meta-label {
+      font-size: 0.85rem;
+    }
+
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .stars {
+      color: #f39c12;
+      font-size: 1.1rem;
+    }
+
+    .review-count {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .content-wrapper {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar-section {
+        position: relative;
+        top: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+
+      .navbar {
+        padding: 12px 20px;
+      }
+
+      .main-content {
+        padding: 20px 15px;
+      }
+
+      .page-header {
+        padding: 25px 20px;
+      }
+
+      .page-title {
+        font-size: 1.5rem;
+      }
+
+      .courses-section {
+        padding: 20px 15px;
+      }
+
+      .course-card {
+        flex-direction: column;
+      }
+
+      .course-img {
+        width: 100%;
+        height: 200px;
+      }
+
+      .course-meta {
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo-section">
+      <svg class="logo" viewBox="0 0 320 50" xmlns="http://www.w3.org/2000/svg">
+        <rect x="5" y="5" width="35" height="40" rx="5" fill="#00bcd4"/>
+        <text x="15" y="35" font-family="Arial" font-size="28" font-weight="bold" fill="white">U</text>
+        <text x="50" y="32" font-family="Arial" font-size="24" font-weight="300" fill="#555">UrbanPro</text>
+        <text x="50" y="42" font-family="Arial" font-size="10" fill="#999">Discover • Learn • Grow</text>
+      </svg>
+    </div>
+    <button class="hamburger" id="hamburgerBtn">☰</button>
+  </nav>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="#home">Home</a>
+    <a href="#courses">Browse Courses</a>
+    <a href="#tutors">Find Tutors</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#about">About Us</a>
+    <a href="#contact">Contact</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">Online Courses and Classes on UrbanPro</h1>
+      <p class="page-subtitle">with UrbanPro Unlimited subscription, you can join unlimited classes!</p>
+      
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-input" placeholder="Search by Category">
+      </div>
+    </div>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+      <!-- Courses Section -->
+      <div class="courses-section">
+        <!-- Course Card 1 -->
+        <div class="course-card">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=300&h=300&fit=crop" alt="Economics Tutor" class="course-img">
+            <span class="live-badge">LIVE</span>
+          </div>
+          <div class="course-details">
+            <div class="course-header">
+              <div>
+                <h2 class="course-title">Class 11 Tuition - Economics by Dr. Ankita Jain</h2>
+                <div class="rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="review-count">(35 reviews)</span>
+                </div>
+              </div>
+            </div>
+            <p class="course-date"><span class="calendar-icon">📅</span> Fri, 24 Oct at 04:00pm IST</p>
+            <p class="course-description">
+              Hello everyone! My name is Dr. Ankita, and I am here as your tutor for Accounts and Economics. With a PhD in Economics and 7 years of experience in teaching and mentoring students. Whether you are a 11th or 12th grade student preparing for exams, a college student exploring deeper concepts of economic, I am here to help you build a strong foundation. My goal is to make...
+            </p>
+            <div class="course-meta">
+              <div class="meta-item">
+                <span class="meta-value">00</span>
+                <span class="meta-label">Days</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">00</span>
+                <span class="meta-label">Hour</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">15</span>
+                <span class="meta-label">Min</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">35</span>
+                <span class="meta-label">Sec</span>
+              </div>
+            </div>
+            <button class="btn-primary">📝 Register Now</button>
+          </div>
+        </div>
+
+        <!-- Course Card 2 -->
+        <div class="course-card">
+          <div class="course-image">
+            <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=300&h=300&fit=crop" alt="German Language Classes" class="course-img">
+            <span class="live-badge">LIVE</span>
+          </div>
+          <div class="course-details">
+            <div class="course-header">
+              <div>
+                <h2 class="course-title">German Language Classes - by Thanuja G</h2>
+                <div class="rating">
+                  <span class="stars">★★★★★</span>
+                  <span class="review-count">(738 reviews)</span>
+                </div>
+              </div>
+            </div>
+            <p class="course-date"><span class="calendar-icon">📅</span> Fri, 24 Oct at 08:00pm IST</p>
+            <p class="course-description">
+              Good Day! As a skilled and enthusiastic teacher with key experience instructing students in German grammar and vocabulary to encourage language retention and eventual fluency, it is my pleasure to submit the enclosed resume for your review. My background and passion for education and the German language positions me to significantly impact as your next Language...
+            </p>
+            <div class="course-meta">
+              <div class="meta-item">
+                <span class="meta-value">00</span>
+                <span class="meta-label">Days</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">04</span>
+                <span class="meta-label">Hour</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">15</span>
+                <span class="meta-label">Min</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">35</span>
+                <span class="meta-label">Sec</span>
+              </div>
+            </div>
+            <button class="btn-primary">📝 Register Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar Section -->
+      <div class="sidebar-section">
+        <div class="sidebar-card">
+          <h3>Looking for a specific course?</h3>
+          <p>Find Online or Offline courses and classes on UrbanPro.</p>
+          <button class="btn-primary">Find Now</button>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Are you a Tutor or Trainer?</h3>
+          <button class="btn-outline">Create Free Profile »</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger Menu Toggle
+    const hamburger = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+
+    hamburger.addEventListener('click', function() {
+      if (sidebar.style.width === '250px') {
+        sidebar.style.width = '0';
+        hamburger.innerHTML = '☰';
+      } else {
+        sidebar.style.width = '250px';
+        hamburger.innerHTML = '✕';
+      }
+    });
+
+    // Close sidebar when clicking on links
+    const sidebarLinks = sidebar.querySelectorAll('a');
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        sidebar.style.width = '0';
+        hamburger.innerHTML = '☰';
+      });
+    });
+
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(event) {
+      const isClickInsideSidebar = sidebar.contains(event.target);
+      const isClickOnHamburger = hamburger.contains(event.target);
+      
+      if (!isClickInsideSidebar && !isClickOnHamburger && sidebar.style.width === '250px') {
+        sidebar.style.width = '0';
+        hamburger.innerHTML = '☰';
+      }
+    });
+  </script>
+</body>
+</html>
