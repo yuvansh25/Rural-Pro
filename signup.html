@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tutor Signup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #222;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 1400px;
+      height: auto;
+      border: 20px solid black;
+      background-color: #222;
+      overflow: hidden;
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2;
+    }
+
+    .content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      color: white;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .signup-form {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .form-title {
+      font-size: 1.8rem;
+      color: #333;
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 500;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .radio-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .radio-option input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 20px;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: white;
+    }
+
+    .radio-option input[type="radio"]:checked + .radio-label {
+      border-color: #00d4aa;
+      background: #f0fdf9;
+    }
+
+    .radio-circle {
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ddd;
+      border-radius: 50%;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .radio-option input[type="radio"]:checked + .radio-label .radio-circle {
+      border-color: #00d4aa;
+    }
+
+    .radio-option input[type="radio"]:checked + .radio-label .radio-circle::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: #00d4aa;
+      border-radius: 50%;
+    }
+
+    .radio-text {
+      color: #333;
+      font-size: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      color: #333;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-input:focus {
+      border-color: #0d6efd;
+    }
+
+    .form-input::placeholder {
+      color: #aaa;
+    }
+
+    .phone-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .country-select {
+      width: 140px;
+      padding: 14px 16px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 15px;
+      outline: none;
+      cursor: pointer;
+      background: white;
+      color: #333;
+    }
+
+    .phone-input {
+      flex: 1;
+    }
+
+    select.form-input {
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%23999' d='M0 0l6 8 6-8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 14px;
+      background: #0d6efd;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+      background: #0b5ed7;
+    }
+
+    .terms {
+      text-align: center;
+      font-size: 13px;
+      color: #666;
+      margin-top: 20px;
+    }
+
+    .terms a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        height: auto;
+        border: 10px solid black;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+      }
+
+      .signup-form {
+        padding: 30px 20px;
+      }
+
+      .form-title {
+        font-size: 1.5rem;
+      }
+
+      .radio-group {
+        flex-direction: column;
+      }
+
+      .phone-group {
+        flex-direction: column;
+      }
+
+      .country-select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img class="background" src="img/background.jpeg" alt="Background">
+    <div class="overlay"></div>
+    
+    <div class="content">
+      <h1>Sign up as a Tutor</h1>
+      
+      <form class="signup-form" id="signupForm">
+        <div class="radio-group">
+          <div class="radio-option">
+            <input type="radio" id="individual" name="tutorType" value="individual" checked>
+            <label for="individual" class="radio-label">
+              <div class="radio-circle"></div>
+              <span class="radio-text">I am an Individual</span>
+            </label>
+          </div>
+          <div class="radio-option">
+            <input type="radio" id="institute" name="tutorType" value="institute">
+            <label for="institute" class="radio-label">
+              <div class="radio-circle"></div>
+              <span class="radio-text">I run an Institute</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Enter your Full name Eg: Amit Singh"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="email" 
+            class="form-input" 
+            placeholder="Enter your Email Eg: amit@gmail.com"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <div class="phone-group">
+            <select class="country-select">
+              <option value="+91">- Select -</option>
+              <option value="+91">India (+91)</option>
+              <option value="+1">USA (+1)</option>
+              <option value="+44">UK (+44)</option>
+            </select>
+            <input 
+              type="tel" 
+              class="form-input phone-input" 
+              placeholder="Enter your Mobile Number"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <select class="form-input" required>
+            <option value="">Select Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Enter the main category you Teach, more could be added later"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <input 
+            type="text" 
+            class="form-input" 
+            placeholder="Enter Pincode or Locality Eg: 560076 or JP Nagar"
+            required
+          >
+        </div>
+
+        <button type="submit" class="submit-btn">Create Profile</button>
+
+        <div class="terms">
+          By Signing Up, you agree to our <a href="#">Terms of Use</a> & <a href="#">Privacy Policy</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Profile Created Successfully!');
+    });
+  </script>
+</body>
+</html>
